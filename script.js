@@ -1,39 +1,46 @@
 options = ["rock", "paper", "scissors"];
 
-game();
+const resultDiv = document.querySelector("#result")
+const scoreDiv = document.querySelector("#score")
 
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-    for (let i = 0; i < 5; i++) {
-        const playerSelection = getPlayerChoice();
-        const computerSelection = getComputerChoice();
-        console.log(playRound(playerSelection, computerSelection));
+const buttons = document.querySelectorAll(".weapons");
+
+let computerScore = 0;
+let playerScore = 0;
+
+buttons.forEach(button => button.addEventListener("click", () => {
+    computerSelection = getComputerChoice();
+    playerSelection = button.textContent;
+    playerSelection = playerSelection.toLowerCase();
+    playRound(playerSelection, computerSelection);
+
+    if (playerScore < 5 && computerScore < 5) {
         if (checkWinner(playerSelection, computerSelection) === "Player") {
             playerScore++;
         } else if (checkWinner(playerSelection, computerSelection) === "Computer") {
             computerScore++;
         }
-    }
-    console.log("Game Over");
-    if (playerScore > computerScore) {
-        console.log("Player wins!");
-    } else if (playerScore < computerScore) {
-        console.log("Computer wins :(");
-    }
-    console.log("---------------------------------");
-}
+        scoreDiv.textContent = `Player ${playerScore} : ${computerScore} Computer`;
+    } else {
+        resultDiv.textContent = "Game over!";
+        if (playerScore > computerScore) {
+            scoreDiv.textContent = `Player wins! ${playerScore} - ${computerScore}`;
+        } else {
+            scoreDiv.textContent = `Computer wins :( ${playerScore} - ${computerScore}`;
+        }
+    } 
+}));
 
 function playRound(playerSelection, computerSelection) {
     const result = checkWinner(playerSelection, computerSelection);
     playerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1);
     computerSelection = computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1);
     if (result === "Tie") {
-        return "It's a Tie!";
+        resultDiv.textContent = "It's a Tie!";
     } else if (result === "Player") {
-        return `You win! ${playerSelection} beats ${computerSelection}`;
+        resultDiv.textContent = `You win! ${playerSelection} beats ${computerSelection}`;
     } else if (result === "Computer") {
-        return `You lose! ${computerSelection} beats ${playerSelection}`;
+        resultDiv.textContent = `You lose! ${computerSelection} beats ${playerSelection}`;
     }
 }
 
@@ -69,3 +76,48 @@ function getPlayerChoice() {
         }
     }
 } 
+
+// THIS WORK JUST FOR THE ROCK BUTTON
+// rockBtn.addEventListener("click", () => {
+//     computerSelection = getComputerChoice();
+//     playerSelection = "rock";
+//     playRound(playerSelection, computerSelection);
+//     if (playerScore < 4 && computerScore < 4) {
+//         if (checkWinner(playerSelection, computerSelection) === "Player") {
+//             playerScore++;
+//         } else if (checkWinner(playerSelection, computerSelection) === "Computer") {
+//             computerScore++;
+//         }
+//         scoreDiv.textContent = `Player ${playerScore} : ${computerScore} Computer`;
+//     } else {
+//         resultDiv.textContent = "Game over!";
+//         if (playerScore > computerScore) {
+//             scoreDiv.textContent = `Player wins! ${playerScore} – ${computerScore}`;
+//         } else {
+//             scoreDiv.textContent = `Computer wins :( ${playerScore} – ${computerScore}`;
+//         }
+//     } 
+// });
+
+// THIS FUNCTION WAS USED IN THE V.1 TO PLAY 5 GAMES IN A ROW
+// game();
+
+// function game() {
+//     let playerScore = 0;
+//     let computerScore = 0;
+//         const playerSelection = getPlayerChoice();
+//         const computerSelection = getComputerChoice();
+//         console.log(playRound(playerSelection, computerSelection));
+//         if (checkWinner(playerSelection, computerSelection) === "Player") {
+//             playerScore++;
+//         } else if (checkWinner(playerSelection, computerSelection) === "Computer") {
+//             computerScore++;
+//         }
+//     console.log("Game Over");
+//     if (playerScore > computerScore) {
+//         console.log("Player wins!");
+//     } else if (playerScore < computerScore) {
+//         console.log("Computer wins :(");
+//     }
+//     console.log("---------------------------------");
+// }
